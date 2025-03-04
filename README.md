@@ -7,9 +7,9 @@ Zbuildíme dockerimage docker build -t devbuild .
 
 Po zbuildování dockerimage spustíme kontejner docker run -p 9400:9400 -it --rm devbuild
 
-Skočíme do kontejneru tam zbuildíme a spustíme java aplikaci
+A veškeré metriky se nám zobrazí na localhost:9400/metrics
 
-Zde použijeme ./gradlew build a java -cp "build/libs/*" Main
+Ke skriptu jsem přidal ./start.sh pro automatizované spouštění.
 
 
 

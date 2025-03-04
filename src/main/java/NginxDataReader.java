@@ -51,7 +51,8 @@ public class NginxDataReader {
   }
 
   private static void metricLogEntry(NginxLogEntry nginxLogEntry) {
-    statusCodesCounter.labelValues(String.valueOf(nginxLogEntry.statusCode())).inc();
+    String statusGroup = getStatusGroup(nginxLogEntry.statusCode());
+    statusCodesCounter.labelValues(statusGroup).inc();
   }
 
   static Optional<NginxLogEntry> parseLine(String line) {
@@ -73,4 +74,19 @@ public class NginxDataReader {
     log.warn("Line does not match the pattern: {}", line);
     return Optional.empty();
   }
+
+  // Nová metoda pro určení skupiny statusového kódu
+  private static String getStatusGroup(int statusCode) {
+    if (statusCode >= 200 && statusCode < 300) {
+      return "2xx";
+    } else if (statusCode >= 300 && statusCode < 400) {
+      return "3xx";
+    } else if (statusCode >= 400 && statusCode < 500) {
+      return "4xx";
+    } else if (statusCode >= 500 && statusCode < 600) {
+      return "5xx";
+    }
+    return "unknown"; // Pokud se objeví nějaký neznámý status
+  }
 }
+

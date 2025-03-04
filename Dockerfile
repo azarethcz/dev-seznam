@@ -39,3 +39,18 @@ RUN gradle build --stacktrace > build_output.log || (echo "Chyba během build pr
 
 # Volitelně: Spuštění aplikace po úspěšném buildu
 # CMD ["java", "-cp", "build/libs/*", "com.example.Main"]
+
+# Zkopírování souborů projektu do kontejneru
+COPY . .
+
+# Udělení práv ke spuštění Gradle wrapperu
+RUN chmod +x ./gradlew
+
+# Sestavení aplikace
+RUN ./gradlew build
+
+# Otevření portu 9400
+EXPOSE 9400
+
+# Příkaz pro spuštění aplikace
+CMD ["java", "-cp", "build/libs/*", "Main"]
